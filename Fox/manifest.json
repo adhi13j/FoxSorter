@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "FoxSorter",
+  "version": "1.0.0",
+  "description": "",
+  "permissions": [
+    "tabs",
+    "storage",
+    "history"
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "fox-sorter@yourdomain.com",
+      "strict_min_version": "109.0"
+    }
+  }
+}
