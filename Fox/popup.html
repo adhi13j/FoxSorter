@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Fox Sorter</title>
+<link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+<div class="popup" id="popup">
+
+  <header class="topbar">
+    <div class="brand">
+      <img class = "fox__logo" src="images/fox_logo.png" alt="Fox Sorter" />
+      <div class="brand__text">
+        <p class="brand__name">Fox Sorter</p>
+        <p class="brand__status" id="statusLine">Watching 12 tabs · this window</p>
+      </div>
+    </div>
+    <button class="power" id="disableToggle" type="button" aria-pressed="false" aria-label="Disable Fox Sorter">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.5 1.5V7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M3.6 3.3a5.25 5.25 0 1 0 7.8 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </header>
+
+  <main class="screens">
+
+    <!-- ================= HOME ================= -->
+    <section class="screen" id="screen-home" data-screen="home">
+
+      <div class="card current-tab">
+        <p class="eyebrow">Current tab</p>
+        <div class="current-tab__row">
+          <span class="favicon" id="favicon">📄</span>
+          <div class="current-tab__info">
+            <p class="current-tab__title" id="currentTitle">docs.python.org</p>
+            <p class="current-tab__category" id="currentCategory">
+              <span class="dot dot--neutral" id="currentDot"></span>Uncategorized
+            </p>
+          </div>
+          <button class="btn btn--ghost btn--small" id="categorizeBtn" aria-expanded="false">
+            Categorize <svg class="chev" width="9" height="6" viewBox="0 0 9 6"><path d="M1 1l3.5 3.5L8 1" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="category-picker" id="categoryPicker" hidden>
+          <button class="chip chip--study" data-cat="Study" data-dot="dot--study">Study</button>
+          <button class="chip chip--entertainment" data-cat="Entertainment" data-dot="dot--entertainment">Entertainment</button>
+          <button class="chip chip--hobbies" data-cat="Hobbies" data-dot="dot--hobbies">Hobbies</button>
+          <button class="chip chip--neutral" data-cat="Neutral" data-dot="dot--neutral">Neutral</button>
+        </div>
+      </div>
+
+      <button class="btn btn--primary btn--full" id="sortBtn">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 4.5h10M4.5 7.5h6M6.5 10.5h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span id="sortBtnLabel">Sort tabs now</span>
+      </button>
+
+      <div class="toggle-list">
+        <label class="toggle-row">
+          <div class="toggle-row__text">
+            <span class="toggle-row__label">Auto sort</span>
+            <span class="toggle-row__hint">Sorts the tabs open when a session starts</span>
+          </div>
+          <span class="switch">
+            <input type="checkbox" id="autoSort" />
+            <span class="switch__track"><span class="switch__thumb"></span></span>
+          </span>
+        </label>
+        <label class="toggle-row">
+          <div class="toggle-row__text">
+            <span class="toggle-row__label">Live sort</span>
+            <span class="toggle-row__hint">Keeps sorting as new tabs are opened</span>
+          </div>
+          <span class="switch switch--pine">
+            <input type="checkbox" id="liveSort" />
+            <span class="switch__track"><span class="switch__thumb"></span></span>
+          </span>
+        </label>
+      </div>
+
+      <nav class="nav-list">
+        <p class="eyebrow">Browse</p>
+        <button class="nav-row" data-target="categories" type="button">
+          <span>View categories</span>
+          <span class="row-right"><span class="count-pill" id="catCount">4</span><svg class="chev chev--right" width="6" height="9" viewBox="0 0 6 9"><path d="M1 1l3.5 3.5L1 8" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+        <button class="nav-row" data-target="order" type="button">
+          <span>View sorting order</span>
+          <span class="row-right"><svg class="chev chev--right" width="6" height="9" viewBox="0 0 6 9"><path d="M1 1l3.5 3.5L1 8" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+      </nav>
+
+      <div class="card sessions-card">
+        <div class="sessions-card__head">
+          <p class="eyebrow">Saved sessions</p>
+          <span class="count-pill count-pill--gold" id="sessionCount">3 saved</span>
+        </div>
+        <div class="session-select">
+          <select id="sessionSelect" aria-label="Choose a saved session">
+            <option value="morning">Morning research</option>
+            <option value="thesis">Thesis reading</option>
+            <option value="downtime">Downtime</option>
+          </select>
+          <button class="btn btn--secondary btn--small" id="openSessionBtn">Open</button>
+        </div>
+        <button class="nav-row nav-row--flush" data-target="sessions" type="button">
+          <span>View all sessions</span>
+          <span class="row-right"><svg class="chev chev--right" width="6" height="9" viewBox="0 0 6 9"><path d="M1 1l3.5 3.5L1 8" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+      </div>
+
+    </section>
+
+    <!-- ================= CATEGORIES ================= -->
+    <section class="screen" id="screen-categories" data-screen="categories" hidden>
+      <button class="back-row" data-back type="button">
+        <svg width="7" height="11" viewBox="0 0 7 11"><path d="M6 1L1.5 5.5L6 10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Categories
+      </button>
+      <ul class="category-list">
+        <li class="category-item">
+          <span class="dot dot--study"></span>
+          <div class="category-item__text">
+            <p class="category-item__name">Study</p>
+            <p class="category-item__domains">leetcode.com, coursera.org, docs.python.org +6</p>
+          </div>
+          <span class="count-pill">9</span>
+        </li>
+        <li class="category-item">
+          <span class="dot dot--entertainment"></span>
+          <div class="category-item__text">
+            <p class="category-item__name">Entertainment</p>
+            <p class="category-item__domains">netflix.com, youtube.com +3</p>
+          </div>
+          <span class="count-pill">5</span>
+        </li>
+        <li class="category-item">
+          <span class="dot dot--hobbies"></span>
+          <div class="category-item__text">
+            <p class="category-item__name">Hobbies</p>
+            <p class="category-item__domains">chess.com, allrecipes.com</p>
+          </div>
+          <span class="count-pill">2</span>
+        </li>
+        <li class="category-item">
+          <span class="dot dot--neutral"></span>
+          <div class="category-item__text">
+            <p class="category-item__name">Neutral</p>
+            <p class="category-item__domains">Uncategorized domains land here</p>
+          </div>
+          <span class="count-pill">4</span>
+        </li>
+      </ul>
+      <button class="btn btn--ghost btn--full btn--small" id="addCategoryBtn" type="button">+ Add category</button>
+    </section>
+
+    <!-- ================= ORDER ================= -->
+    <section class="screen" id="screen-order" data-screen="order" hidden>
+      <button class="back-row" data-back type="button">
+        <svg width="7" height="11" viewBox="0 0 7 11"><path d="M6 1L1.5 5.5L6 10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Sorting order
+      </button>
+      <p class="screen-hint">Tabs are grouped left to right in this order.</p>
+      <ol class="order-list" id="orderList">
+        <li class="order-item" data-cat="Study">
+          <span class="order-item__handle">⋮⋮</span>
+          <span class="dot dot--study"></span>
+          <span class="order-item__name">Study</span>
+          <span class="order-item__arrows">
+            <button class="arrow-btn" data-dir="up" aria-label="Move up">▲</button>
+            <button class="arrow-btn" data-dir="down" aria-label="Move down">▼</button>
+          </span>
+        </li>
+        <li class="order-item" data-cat="Hobbies">
+          <span class="order-item__handle">⋮⋮</span>
+          <span class="dot dot--hobbies"></span>
+          <span class="order-item__name">Hobbies</span>
+          <span class="order-item__arrows">
+            <button class="arrow-btn" data-dir="up" aria-label="Move up">▲</button>
+            <button class="arrow-btn" data-dir="down" aria-label="Move down">▼</button>
+          </span>
+        </li>
+        <li class="order-item" data-cat="Neutral">
+          <span class="order-item__handle">⋮⋮</span>
+          <span class="dot dot--neutral"></span>
+          <span class="order-item__name">Neutral</span>
+          <span class="order-item__arrows">
+            <button class="arrow-btn" data-dir="up" aria-label="Move up">▲</button>
+            <button class="arrow-btn" data-dir="down" aria-label="Move down">▼</button>
+          </span>
+        </li>
+        <li class="order-item" data-cat="Entertainment">
+          <span class="order-item__handle">⋮⋮</span>
+          <span class="dot dot--entertainment"></span>
+          <span class="order-item__name">Entertainment</span>
+          <span class="order-item__arrows">
+            <button class="arrow-btn" data-dir="up" aria-label="Move up">▲</button>
+            <button class="arrow-btn" data-dir="down" aria-label="Move down">▼</button>
+          </span>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ================= SESSIONS ================= -->
+    <section class="screen" id="screen-sessions" data-screen="sessions" hidden>
+      <button class="back-row" data-back type="button">
+        <svg width="7" height="11" viewBox="0 0 7 11"><path d="M6 1L1.5 5.5L6 10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Saved sessions
+      </button>
+      <ul class="session-list">
+        <li class="session-item">
+          <div class="session-item__text">
+            <p class="session-item__name">Morning research</p>
+            <p class="session-item__meta">7 tabs · saved 3 days ago</p>
+          </div>
+          <div class="session-item__actions">
+            <button class="btn btn--secondary btn--small">Open</button>
+            <button class="icon-btn" aria-label="Rename session">✎</button>
+            <button class="icon-btn icon-btn--danger" aria-label="Delete session">✕</button>
+          </div>
+        </li>
+        <li class="session-item">
+          <div class="session-item__text">
+            <p class="session-item__name">Thesis reading</p>
+            <p class="session-item__meta">14 tabs · saved 1 week ago</p>
+          </div>
+          <div class="session-item__actions">
+            <button class="btn btn--secondary btn--small">Open</button>
+            <button class="icon-btn" aria-label="Rename session">✎</button>
+            <button class="icon-btn icon-btn--danger" aria-label="Delete session">✕</button>
+          </div>
+        </li>
+        <li class="session-item">
+          <div class="session-item__text">
+            <p class="session-item__name">Downtime</p>
+            <p class="session-item__meta">5 tabs · saved 2 weeks ago</p>
+          </div>
+          <div class="session-item__actions">
+            <button class="btn btn--secondary btn--small">Open</button>
+            <button class="icon-btn" aria-label="Rename session">✎</button>
+            <button class="icon-btn icon-btn--danger" aria-label="Delete session">✕</button>
+          </div>
+        </li>
+      </ul>
+      <button class="btn btn--ghost btn--full btn--small" id="saveCurrentBtn" type="button">+ Save current window as session</button>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <span>Fox Sorter · v0.1</span>
+    <span class="footer__dot">·</span>
+    <span id="disableLabel">Enabled</span>
+  </footer>
+
+</div>
+<script src="popup.js"></script>
+</body>
+</html>
