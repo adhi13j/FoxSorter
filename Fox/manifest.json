@@ -27,7 +27,7 @@
     }
   },
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["background-service.js"]
   },
   "browser_specific_settings": {
     "gecko": {
