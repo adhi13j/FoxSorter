@@ -2,12 +2,33 @@
   "manifest_version": 3,
   "name": "FoxSorter",
   "version": "1.0.0",
-  "description": "",
+  "description": "Sort and organize browser tabs",
   "permissions": [
     "tabs",
     "storage",
-    "history"
+    "history",
+    "activeTab"
   ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "icons": {
+    "16": "images/fox_logo.png",
+    "32": "images/fox_logo.png",
+    "48": "images/fox_logo.png",
+    "128": "images/fox_logo.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Fox Sorter",
+    "default_icon": {
+      "16": "images/fox_logo.png",
+      "32": "images/fox_logo.png"
+    }
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
   "browser_specific_settings": {
     "gecko": {
       "id": "fox-sorter@yourdomain.com",
